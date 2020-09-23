@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>前端播放m3u8格式视频</title>
+    <link href="https://vjs.zencdn.net/7.4.1/video-js.css" rel="stylesheet">
+    <script src='https://vjs.zencdn.net/7.4.1/video.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.min.js" type="text/javascript"></script>
+</head>
+<body>
+    <style>
+        .video-js .vjs-tech {
+            position: relative !important;
+        }
+        .qiehuan{
+            width:100px;
+            height: 100px;
+            background: red;
+            margin:0 auto;
+            line-height: 100px;
+            color:#fff;
+            text-align: center;
+        }
+        #my-video{
+            width: 50%;
+            height: auto;
+            margin:0 auto;
+        }
+    </style>
+    <div>
+        <video id="my-video" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup='{}'>
+            <source id="source" src="https://mediac.lemonvd.com/media/c546b65f720c7a3222bb7ffe9d38ff0a/vbrcq28hls1max2m/c546b65f720c7a3222bb7ffe9d38ff0a.m3u8" type="application/x-mpegURL"></source>
+        </video>
+    </div>
+    <div class="qiehuan">切换视频</div>
+</body>
+ 
+<script>
+    // 设置videojs
+    var myVideo = videojs('my-video', {
+        bigPlayButton: true,
+        textTrackDisplay: false,
+        posterImage: false,
+        errorDisplay: false,
+    })
+    myVideo.play()
+    var changeVideo = ((vdoSrc)=>{
+        //利用正侧表达式来判断他是否为m3u8格式
+        if (/\.m3u8$/.test(vdoSrc)) { 
+            myVideo.src({
+                src: vdoSrc,
+                type: 'application/x-mpegURL' //添加新的视频type要给一个新的值
+            })
+        } else {
+            myVideo.src(vdoSrc)
+        }
+        myVideo.load();
+        //播放事件
+        myVideo.play();
+    })
+    //点击切换视频执行changeVideo函数
+    var src = 'http://1252093142.vod2.myqcloud.com/4704461fvodcq1252093142/f865d8a05285890787810776469/playlist.f3.m3u8';
+    document.querySelector('.qiehuan').addEventListener('click', function () {
+        changeVideo(src);
+    })
+</script>

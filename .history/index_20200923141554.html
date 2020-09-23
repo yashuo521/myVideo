@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>前端解密播放m3u8格式视频</title>
+    <link href="https://vjs.zencdn.net/7.4.1/video-js.css" rel="stylesheet">
+    <script src='https://vjs.zencdn.net/7.4.1/video.js'></script>
+    <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+</head>
+    <style>
+        /* .video-js .vjs-tech {
+            position: relative !important;
+        }
+        .infoType{
+            width: 50%;
+        }
+        .switch-video{
+            width:100px;
+            height: 100px;
+            background: red;
+            margin:0 auto;
+            line-height: 100px;
+            color:#fff;
+            text-align: center;
+        } */
+        .list{ width: 740px; height: 400px; margin-left: auto; margin-right: auto; margin-top: 100px; }
+    </style>
+<body>
+    <div class="list">
+		<video id="my-video" class="video-js" controls preload="auto" width="740" height="400"poster="" data-setup="{}"></video>
+		 <!-- <input type="button" value="跳转进度" onclick="tiaozhuan1()" />
+		 <input type="button" value="获取进度" onclick="huoqu1()" />
+		 <input type="button" value="切换视频" onclick="qiehuan1()" />
+		 <input type="button" value="获取时间" onclick="huoqushijian1()" /> -->
+	</div>
+
+    <!-- <div class="infoType">
+        <video id="my-video" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup='{}' style="width: 100%;height: auto" poster="http://pic.jj20.com/up/allimg/1114/0QR0103525/200QQ03525-1-1200.jpg">
+            <source src="https://mediac.lemonvd.com/media/c546b65f720c7a3222bb7ffe9d38ff0a/vbrcq28hls1max2m/c546b65f720c7a3222bb7ffe9d38ff0a.m3u8" type="application/x-mpegURL">
+        </video>
+    </div>
+     <div class="switch-video">切换视频</div> -->
+</body>
+ 
+<script type="text/javascript">
+    var videoObj = videojs('my-video');
+    var option={};
+    var myPlayer = videojs('my-video',option,function onPlayerReady(){
+        var myPlayer = this;
+        myPlayer.src({src: "https://up.imgupio.com/demo/birds.m3u8", type: "application/x-mpegURL"});
+        videojs.log("播放器已经准备好了!");
+        this.play();
+    }); 
+    /*让视频跳转到一个进度,单位是秒*/
+    function tiaozhuan1(){
+        videoObj.currentTime(120);	
+    }
+    /*currentTime是获取当前视频的播放时间,我这里让它转成了xx:xx:xx的格式*/
+    function huoqu1(){
+        var videoTime = videoObj.currentTime();
+        //获取视频有几个小时
+        var h = Math.floor(videoTime / 3600);
+        //获取视频有多少分钟
+        var m = Math.floor(videoTime % 3600 / 60);
+        //获取视频有多少秒
+        var s = Math.floor(videoTime % 60);
+        //将视频格式化为xx:xx:xx,比如1个小时12分钟11秒的视频就是01:12:11
+        console.log((h < 10 ? '0' + h : h) + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s));
+        console.log(videoTime);
+    }
+    /*这里我切换了一个新的视频源*/
+    function qiehuan1(){
+        videoObj.src({src: "https://up.imgupio.com/demo/birds.m3u8", type: "application/x-mpegURL"});
+    }
+    /*这样可以获取视频的总长度,单位是秒*/
+    function huoqushijian1(){
+        var howLongIsThis = videoObj.duration();
+        console.log(howLongIsThis);
+        
+    }
+    /*这样是再加载视频时会执行的函数,每次切换视频源都会调用此函数*/
+    videoObj.on("loadedmetadata",function(){
+        console.log("正在读取配置信息")
+    });
+
+
+
+
+
+    //配置video.js
+    // var myPlayer = videojs('my-video');
+    // videojs("my-video").ready(function(){
+    //     var myPlayer = this;
+    //     myPlayer.play();
+    // });
+    // myVideo.play()
+    // var changeVideo = function (vdoSrc) {
+    //     //判断视频源是否是m3u8的格式
+    //     if (/\.m3u8$/.test(vdoSrc)) { 
+    //         myVideo.src({
+    //             src: vdoSrc,
+    //             type: 'application/x-mpegURL'
+    //         })
+    //     } else {
+    //         myVideo.src(vdoSrc)
+    //     }
+    //     myVideo.load();
+    //     myVideo.play();
+    // }
+    // var src = 'https://mediac.lemonvd.com/media/c546b65f720c7a3222bb7ffe9d38ff0a/vbrcq28hls1max2m/c546b65f720c7a3222bb7ffe9d38ff0a.m3u8';
+    // document.querySelector('.switch-video').addEventListener('click', function () {
+    //     changeVideo(src);
+    // })
+</script>
