@@ -38,8 +38,7 @@
  
 <script>
     $(function(){
-        //初始化
-        dataList();
+        changeVideo();
     })
     // 设置videojs
     var myVideo = videojs('my-video', {
@@ -48,25 +47,19 @@
         posterImage: false,
         errorDisplay: false,
     })
+    //解密函数
+    var dataList = (()=>{
+
+    })
     //播放事件
     myVideo.play();
-    //解密函数
-    var dataList = ((red)=>{
-        //获取video标签上的src
-        let urlType = '';
-        //判断red是否有值
-        red == undefined ? urlType = $('#source').attr('src') : urlType = red;
-
-
-
-
-        changeVideo(urlType);
-    })
     var changeVideo = ((vdoSrc)=>{
         //利用正侧表达式来判断他是否为m3u8格式
         if (/\.m3u8$/.test(vdoSrc)) { 
-            //返回给video标签
-            myVideo.src(vdoSrc)
+            myVideo.src({
+                src: vdoSrc,
+                type: 'application/x-mpegURL' //添加新的视频type要给一个新的值
+            })
         } else {
             myVideo.src(vdoSrc)
         }
@@ -77,6 +70,6 @@
     var src = 'http://1252093142.vod2.myqcloud.com/4704461fvodcq1252093142/f865d8a05285890787810776469/playlist.f3.m3u8';
     document.querySelector('.qiehuan').addEventListener('click', function () {
         //回调函数
-        dataList(src);
+        changeVideo(src);
     })
 </script>

@@ -54,7 +54,6 @@
     var dataList = ((red)=>{
         //获取video标签上的src
         let urlType = '';
-        //判断red是否有值
         red == undefined ? urlType = $('#source').attr('src') : urlType = red;
 
 
@@ -65,7 +64,6 @@
     var changeVideo = ((vdoSrc)=>{
         //利用正侧表达式来判断他是否为m3u8格式
         if (/\.m3u8$/.test(vdoSrc)) { 
-            //返回给video标签
             myVideo.src(vdoSrc)
         } else {
             myVideo.src(vdoSrc)
